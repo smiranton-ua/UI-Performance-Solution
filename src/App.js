@@ -1,26 +1,59 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Observer } from "mobx-react"
+import { observable } from "mobx"
+import { FixedSizeList as List } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
 
-function App() {
+import './index.css';
+
+const Row = ({ index, style }) => {
+  const el = index > waiting.length ? accepted[index - waiting.length] : (waiting[index] || waiting[index - 1]);
+  const styleEl = { ...style };
+
+  if (index === waiting.length + 1) {
+    styleEl.borderTop = '3px solid black';
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={index % 2 ? "ListItemOdd" : "ListItemEven"} style={styleEl}>
+      {el.name}
     </div>
+  );
+};
+
+function App({ accepted, waiting }) {
+  return (
+    <AutoSizer>
+      {({ height, width }) => (
+        <Observer>{
+          () => {
+            return (
+              <List
+                className="List"
+                height={height}
+                itemCount={accepted.length + waiting.length}
+                itemSize={35}
+                width={width}
+              >
+                {Row}
+              </List>
+            )
+          }}
+        </Observer>
+      )}
+    </AutoSizer>
   );
 }
 
-export default App;
+const accepted = observable(Array(50000).fill(null).map((el, i) => ({ id: i, name: `accepted ${i}` }))); // 5000
+const waiting = observable(Array(50000).fill(null).map((el, i) => ({ id: i, name: `waiting ${i}` }))); // 5000
+
+setInterval(() => {
+  accepted.unshift({ id: accepted.length, name: `accepted ${accepted.length}` })
+}, 300);
+
+setInterval(() => {
+  waiting.unshift({ id: waiting.length, name: `waiting ${waiting.length}` })
+}, 300);
+
+export default () => <App accepted={accepted} waiting={waiting} />;
