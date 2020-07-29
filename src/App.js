@@ -1,10 +1,10 @@
 import React from 'react';
-import { Observer } from "mobx-react"
-import { observable } from "mobx"
-import { FixedSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
+import { Observer } from "mobx-react";
+import { observable } from "mobx";
+import { FixedSizeList as List } from "react-window";
 
-import './index.css';
+import './App.css';
 
 const Row = ({ index, style }) => {
   const el = index > waiting.length ? accepted[index - waiting.length] : (waiting[index] || waiting[index - 1]);
