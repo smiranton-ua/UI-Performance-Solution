@@ -15,7 +15,7 @@ body,
 }
 
 .List {
-  border: 1px solid #d9dddd;
+  border: 1px solid #F7F7F7;
 }
 
 .ListItemEven,
@@ -23,8 +23,19 @@ body,
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 40px;
 }
 
 .ListItemEven {
-  background-color: #f8f8f0;
+  width: 100%;
+  background-color: #edf5ff;
+}
+
+.ListItemContent {
+  background-color: #F4F2F0;
+  height: 100px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
